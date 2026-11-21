@@ -8,15 +8,15 @@ description: Produce GETC's daily four Facebook drafts, one daily Reels/TikTok v
 You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai's live web tools and shell tools. Complete the entire workflow autonomously; do not stop to ask the user to copy log lines manually.
 
 ## Project Paths
-- Project root: /root/GETC/Marketing
-- Master prompt: /root/GETC/Marketing/master_prompt_template.md
-- Sources directory: /root/GETC/Marketing/sources.txt
-- Categories list: /root/GETC/Marketing/categories.txt
-- Source log: /root/GETC/Marketing/used_sources.txt
-- Topic log: /root/GETC/Marketing/used_topics.txt
-- News monitoring log: /root/GETC/Marketing/news_monitoring_log.txt
-- Posts output directory: /root/GETC/Marketing/FB_Posts/
-- Generator & Validator script: /root/GETC/Marketing/generate_posts.py
+- Project root: `/root/GETC/Marketing`
+- Master prompt: `/root/GETC/Marketing/master_prompt_template.md`
+- Sources directory: `/root/GETC/Marketing/sources.txt`
+- Categories list: `/root/GETC/Marketing/categories.txt`
+- Source log: `/root/GETC/Marketing/used_sources.txt`
+- Topic log: `/root/GETC/Marketing/used_topics.txt`
+- News monitoring log: `/root/GETC/Marketing/news_monitoring_log.txt`
+- Posts output directory: `/root/GETC/Marketing/FB_Posts/`
+- Generator & Validator script: `/root/GETC/Marketing/generate_posts.py`
 
 ## Default Daily Run
 1. Generate Posts 1–4 every day (150–250 words each, 1-minute read, strict Facebook safety compliance).
@@ -27,37 +27,37 @@ You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai
 ## Required Execution Sequence
 
 ### 1. Read Project Files & Recent Logs
-Use execute_shell_command to read:
-- Full master_prompt_template.md, sources.txt, categories.txt, and generate_posts.py.
-- Recent logs only (to prevent context window bloat): run tail -n 80 /root/GETC/Marketing/used_topics.txt, tail -n 80 /root/GETC/Marketing/used_sources.txt, and tail -n 15 /root/GETC/Marketing/news_monitoring_log.txt (if they exist).
-- Ensure /root/GETC/Marketing/FB_Posts/ exists. Do not overwrite or delete existing log files.
+Use `execute_shell_command` to read:
+- Full `master_prompt_template.md`, `sources.txt`, `categories.txt`, and `generate_posts.py`.
+- Recent logs only (to prevent context window bloat): run `tail -n 80 /root/GETC/Marketing/used_topics.txt`, `tail -n 80 /root/GETC/Marketing/used_sources.txt`, and `tail -n 15 /root/GETC/Marketing/news_monitoring_log.txt` (if they exist).
+- Ensure `/root/GETC/Marketing/FB_Posts/` exists. Do not overwrite or delete existing log files.
 
 ### 2. Confirm Date & Timezone
-Check the current local date/time in Asia/Yangon (or the timezone configured in generate_posts.py). Use one consistent YYYY.MM.DD date for filenames and YYYY-MM-DD for logs. Use the current year in all search queries to prevent outdated results.
+Check the current local date/time in `Asia/Yangon` (or the timezone configured in `generate_posts.py`). Use one consistent `YYYY.MM.DD` date for filenames and `YYYY-MM-DD` for logs. Use the current year in all search queries to prevent outdated results.
 
 ### 3. Dynamic Hashtag Research & Topic Planning
-- Use web_search to find 2–4 currently trending, relevant Burmese/English/Japanese hashtags on Facebook and TikTok for Japan study, JLPT, or Japan life. Always pair them with mandatory #GETC and #GakushinEikou (total 4–6 hashtags per post).
-- Plan Posts 1–4 together, assigning distinct categories from categories.txt.
-- Check recent topics, core keywords, and domains in used_topics.txt and used_sources.txt. Do not repeat recent concepts, angles, or non-government website domains used within the last 3 days.
+- Use `web_search` to find 2–4 currently trending, relevant Burmese/English/Japanese hashtags on Facebook and TikTok for Japan study, JLPT, or Japan life. Always pair them with mandatory `#GETC` and `#GakushinEikou` (total 4–6 hashtags per post).
+- Plan Posts 1–4 together, assigning distinct categories from `categories.txt`.
+- Check recent topics, core keywords, and domains in `used_topics.txt` and `used_sources.txt`. Do not repeat recent concepts, angles, or non-government website domains used within the last 3 days.
 
 ### 4. Mandatory Japan News Scan (Post 5 Gate)
 Search Japanese, English, and Burmese sources for important updates affecting Myanmar students, workers, or residents in Japan (past 24–72 hours, newly updated official rules, or upcoming effective dates/deadlines).
 - Open exact source pages; never rely on search snippets alone.
 - Cross-check legal/immigration/policy updates across at least two authoritative sources (Tier 1 official + Tier 2 news) where possible.
-- If a qualifying item exists, create Post 5 and set news_monitoring.status to POST_CREATED.
-- If none qualifies, omit Post 5 and set news_monitoring.status to NO_QUALIFYING_NEWS.
+- If a qualifying item exists, create Post 5 and set `news_monitoring.status` to `POST_CREATED`.
+- If none qualifies, omit Post 5 and set `news_monitoring.status` to `NO_QUALIFYING_NEWS`.
 
 ### 5. Write Content & Video Script
-Follow every rule in master_prompt_template.md:
-- FB Safety Shield: No external website URLs inside the post caption (put official source URLs inside Comment 1 instead). No banned promise words (e.g., "100% visa guarantee", "guaranteed job").
-- Synthesized Burmese: Never translate a web article line-by-line. Synthesize into Problem -> Official Fact -> Actionable GETC Tip.
-- Image Prompts: Instruct the AI to place the attached GETC school logo cleanly in the top-left or top-right corner as a subtle, semi-transparent watermark blended naturally with the background without distorting the logo.
-- Video Script: Create one 30–45 second Reels/TikTok script (Hook, 3 Quick Points, CTA) plus two 9:16 B-roll image prompts for Gemini + CapCut workflow.
+Follow every rule in `master_prompt_template.md`:
+- **FB Safety Shield:** No external website URLs inside the post caption (put official source URLs inside Comment 1 instead). No banned promise words (e.g., "100% visa guarantee", "guaranteed job").
+- **Synthesized Burmese:** Never translate a web article line-by-line. Synthesize into Problem -> Official Fact -> Actionable GETC Tip.
+- **Image Prompts:** Instruct the AI to place the attached GETC school logo cleanly in the top-left or top-right corner as a subtle, semi-transparent watermark blended naturally with the background without distorting the logo.
+- **Video Script:** Create one 30–45 second Reels/TikTok script (Hook, 3 Quick Points, CTA) plus two 9:16 B-roll image prompts for Gemini + CapCut workflow.
 
 ### 6. Build JSON Batch
-Write valid UTF-8 JSON (no Markdown fences) to /root/GETC/Marketing/.getc_batch_YYYY.MM.DD.json matching this exact schema:
+Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch_YYYY.MM.DD.json` matching this exact schema:
 
-`json
+```json
 {
   "news_monitoring": {
     "checked_at": "ISO 8601 timestamp with timezone",
