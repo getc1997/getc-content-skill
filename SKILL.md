@@ -1,71 +1,69 @@
 ---
 name: getc-content
-description: Produce GETC's daily four Facebook drafts, scan Japan news for a qualifying optional Post 5, verify dates and sources, save files and logs, and show every draft in copy-ready code blocks.
+description: Produce GETC's daily four Facebook drafts, one daily Reels/TikTok video script, scan Japan news for a qualifying optional Post 5, verify dates and sources, save files and logs via generate_posts.py, and show every draft in copy-ready code blocks.
 ---
 
-# GETC Daily Content Production — Kai 9000 V4
+# GETC Daily Content Production — V1
 
-You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai's live web tools and shell tools. Complete the work; do not stop at request files or ask the user to copy log lines manually.
+You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai's live web tools and shell tools. Complete the entire workflow autonomously; do not stop to ask the user to copy log lines manually.
 
-## Project paths
-- Project root: `/root/GETC/Marketing`
-- Master prompt: `/root/GETC/Marketing/master_prompt_template.md`
-- Sources: `/root/GETC/Marketing/sources.txt`
-- Categories: `/root/GETC/Marketing/categories.txt`
-- Hashtags: `/root/GETC/Marketing/hashtags.txt`
-- Source log: `/root/GETC/Marketing/used_sources.txt`
-- Topic log: `/root/GETC/Marketing/used_topics.txt`
-- News monitoring log: `/root/GETC/Marketing/news_monitoring_log.txt`
-- Posts: `/root/GETC/Marketing/FB_Posts/`
-- Saver: `/root/GETC/Marketing/save_getc_batch.py`
+## Project Paths
+- Project root: /root/GETC/Marketing
+- Master prompt: /root/GETC/Marketing/master_prompt_template.md
+- Sources directory: /root/GETC/Marketing/sources.txt
+- Categories list: /root/GETC/Marketing/categories.txt
+- Source log: /root/GETC/Marketing/used_sources.txt
+- Topic log: /root/GETC/Marketing/used_topics.txt
+- News monitoring log: /root/GETC/Marketing/news_monitoring_log.txt
+- Posts output directory: /root/GETC/Marketing/FB_Posts/
+- Generator & Validator script: /root/GETC/Marketing/generate_posts.py
 
-## Default daily run
-Generate Posts 1–4 every day. Every run must also perform the Japan-important-news scan described in the Master Prompt. Generate Post 5 only if a genuinely important, relevant, current, and verified update qualifies. Otherwise explicitly skip Post 5.
+## Default Daily Run
+1. Generate Posts 1–4 every day (150–250 words each, 1-minute read, strict Facebook safety compliance).
+2. Generate one 30–45 second vertical video script (for Facebook Reels & TikTok) based on the strongest post of the day, including 2 vertical (9:16) Gemini B-roll image prompts.
+3. Perform the mandatory daily Japan news scan. Generate Post 5 only if a genuinely important, current, and verified update qualifies. Otherwise explicitly skip Post 5.
+4. Never connect to Facebook or publish/schedule anything automatically.
 
-Do not connect to Facebook or publish/schedule anything on Facebook. The user personally reviews, creates images, publishes posts, and adds comments.
+## Required Execution Sequence
 
-## Required sequence
+### 1. Read Project Files & Recent Logs
+Use execute_shell_command to read:
+- Full master_prompt_template.md, sources.txt, categories.txt, and generate_posts.py.
+- Recent logs only (to prevent context window bloat): run tail -n 80 /root/GETC/Marketing/used_topics.txt, tail -n 80 /root/GETC/Marketing/used_sources.txt, and tail -n 15 /root/GETC/Marketing/news_monitoring_log.txt (if they exist).
+- Ensure /root/GETC/Marketing/FB_Posts/ exists. Do not overwrite or delete existing log files.
 
-### 1. Read project files
-Use `execute_shell_command` to read the full Master Prompt, sources, categories, hashtags, used source log, used topic log, news monitoring log (if it exists), and saver script. Do not overwrite existing source/topic logs. Create `FB_Posts/` if missing. If a required file is missing, report it; do not invent its content.
+### 2. Confirm Date & Timezone
+Check the current local date/time in Asia/Yangon (or the timezone configured in generate_posts.py). Use one consistent YYYY.MM.DD date for filenames and YYYY-MM-DD for logs. Use the current year in all search queries to prevent outdated results.
 
-### 2. Confirm date/time
-Use Kai's local-time tool if available. Confirm the project timezone configured in the saver (currently `Asia/Yangon`). Use one consistent date for the output filenames and logs. Do not infer the date from old chat messages.
+### 3. Dynamic Hashtag Research & Topic Planning
+- Use web_search to find 2–4 currently trending, relevant Burmese/English/Japanese hashtags on Facebook and TikTok for Japan study, JLPT, or Japan life. Always pair them with mandatory #GETC and #GakushinEikou (total 4–6 hashtags per post).
+- Plan Posts 1–4 together, assigning distinct categories from categories.txt.
+- Check recent topics, core keywords, and domains in used_topics.txt and used_sources.txt. Do not repeat recent concepts, angles, or non-government website domains used within the last 3 days.
 
-### 3. Plan Posts 1–4
-Read all previous topic and source logs. Plan all four together, matching page/role in the Master Prompt. Prevent conceptual duplicates, including repeated audience question, example, lesson point, and angle. Exact-string matching alone is insufficient.
+### 4. Mandatory Japan News Scan (Post 5 Gate)
+Search Japanese, English, and Burmese sources for important updates affecting Myanmar students, workers, or residents in Japan (past 24–72 hours, newly updated official rules, or upcoming effective dates/deadlines).
+- Open exact source pages; never rely on search snippets alone.
+- Cross-check legal/immigration/policy updates across at least two authoritative sources (Tier 1 official + Tier 2 news) where possible.
+- If a qualifying item exists, create Post 5 and set news_monitoring.status to POST_CREATED.
+- If none qualifies, omit Post 5 and set news_monitoring.status to NO_QUALIFYING_NEWS.
 
-### 4. Mandatory news scan for Post 5
-Search Japanese, English, and Burmese sources for important Japan updates affecting Myanmar students, workers, and residents. Check recent 24–72 hour developments, newly updated official notices, upcoming effective dates, and still-actionable deadlines. Open exact source pages; do not rely on snippets or social reposts. Apply the Master Prompt's source hierarchy, date checks, relevance test, and Post 5 qualification criteria.
+### 5. Write Content & Video Script
+Follow every rule in master_prompt_template.md:
+- FB Safety Shield: No external website URLs inside the post caption (put official source URLs inside Comment 1 instead). No banned promise words (e.g., "100% visa guarantee", "guaranteed job").
+- Synthesized Burmese: Never translate a web article line-by-line. Synthesize into Problem -> Official Fact -> Actionable GETC Tip.
+- Image Prompts: Instruct the AI to place the attached GETC school logo cleanly in the top-left or top-right corner as a subtle, semi-transparent watermark blended naturally with the background without distorting the logo.
+- Video Script: Create one 30–45 second Reels/TikTok script (Hook, 3 Quick Points, CTA) plus two 9:16 B-roll image prompts for Gemini + CapCut workflow.
 
-- If a qualifying item exists, create exactly one Post 5 and set `news_monitoring.status` to `POST_CREATED`.
-- If none qualifies, do not create Post 5; set status to `NO_QUALIFYING_NEWS` and explain the scan result.
-- Never fabricate a search or claim to have checked a page that was not opened.
-- Include `checked_at`, `search_coverage`, and `sources_checked` in the JSON.
+### 6. Build JSON Batch
+Write valid UTF-8 JSON (no Markdown fences) to /root/GETC/Marketing/.getc_batch_YYYY.MM.DD.json matching this exact schema:
 
-### 5. Write the content
-Follow every requirement in the Master Prompt:
-- Natural, professional Burmese.
-- Correct Japanese script + romaji + Burmese meaning where relevant.
-- 1–3 useful comment drafts, each distinct.
-- Tailored image prompt.
-- Realistic marketing; no false urgency or promises.
-- No invented student stories, school affiliations, prices, deadlines, outcomes, or statistics.
-- For Post 5 include `news_announcement_date`, `effective_date`, `affected_audience`, and `action_required`.
-- Keep high-risk legal/immigration/scholarship/labor/financial claims marked for human review where required.
-
-### 6. Build the JSON batch
-Create:
-`/root/GETC/Marketing/.getc_batch_YYYY.MM.DD.json`
-
-Use UTF-8, valid JSON, no Markdown fence. Structure:
-
+`json
 {
   "news_monitoring": {
     "checked_at": "ISO 8601 timestamp with timezone",
     "status": "POST_CREATED or NO_QUALIFYING_NEWS",
-    "summary": "Scan result and reason",
-    "search_coverage": ["search topics/languages"],
+    "summary": "Scan result and explanation",
+    "search_coverage": ["search topics and languages"],
     "sources_checked": [
       {
         "title": "Exact page title",
@@ -74,16 +72,30 @@ Use UTF-8, valid JSON, no Markdown fence. Structure:
       }
     ]
   },
+  "video_script": {
+    "source_post_number": 1,
+    "title": "Video topic title",
+    "hook_0_3s": "Scroll-stopping Burmese spoken hook + [On-screen text]",
+    "body_3_30s": "3 concise spoken Burmese points with visual cues",
+    "cta_30_45s": "Closing Burmese CTA",
+    "broll_image_prompts": [
+      "9:16 vertical Gemini image prompt 1",
+      "9:16 vertical Gemini image prompt 2"
+    ]
+  },
   "posts": [
     {
       "post_number": 1,
-      "page": "Exact target page and URL",
+      "page": "GETC - Hledan ([https://www.facebook.com/gakushineikou](https://www.facebook.com/gakushineikou))",
       "role": "Assigned role",
-      "category": "Selected category",
+      "category": "Selected category from categories.txt",
       "title": "Working title",
-      "caption": "Complete Burmese Facebook caption",
-      "image_prompt": "Complete prompt",
-      "comments": ["Comment one", "Comment two"],
+      "caption": "Complete Burmese Facebook caption (150-250 words, no external URLs, includes #GETC #GakushinEikou + 2-4 trending hashtags)",
+      "image_prompt": "Complete image prompt with attached school logo corner watermark blending instructions",
+      "comments": [
+        "Comment 1: Official source link + brief verification note",
+        "Comment 2: Practical extra tip or lead magnet prompt"
+      ],
       "sources": [
         {
           "title": "Exact source title",
@@ -93,6 +105,7 @@ Use UTF-8, valid JSON, no Markdown fence. Structure:
         }
       ],
       "topic": "Normalized topic",
+      "keywords": ["keyword1", "keyword2", "keyword3"],
       "angle": "Distinct angle",
       "audience_need": "Reader need",
       "verification_status": "VERIFIED or NEEDS HUMAN REVIEW or HOLD",
@@ -102,33 +115,3 @@ Use UTF-8, valid JSON, no Markdown fence. Structure:
     }
   ]
 }
-
-The `posts` array must contain Posts 1–4 and Post 5 only when it qualifies. No duplicate post numbers. If no source was genuinely used for a general educational post, use `sources: []`. Post 5 must have at least one exact source URL.
-
-### 7. Save and update automatically
-Run:
-`python3 /root/GETC/Marketing/save_getc_batch.py --input /root/GETC/Marketing/.getc_batch_YYYY.MM.DD.json`
-
-The saver validates the full batch before writing, then:
-- Saves/overwrites `FB_Posts/YYYY.MM.DD-pN.txt`.
-- Creates `FB_Posts/YYYY.MM.DD-chat-ready.md` from the same JSON.
-- Updates `used_sources.txt` and `used_topics.txt` with GENERATED entries.
-- Updates one dated record in `news_monitoring_log.txt` (reruns replace that date's news scan record).
-
-If the saver fails, fix the JSON and rerun. Never claim success until the command succeeds.
-
-### 8. Verify files
-List the saved post files and read the complete `YYYY.MM.DD-chat-ready.md`. Confirm the source/topic/news logs changed as expected. The chat-ready Markdown is the authoritative copy for the chat response.
-
-### 9. Final chat response — mandatory full copy-ready output
-Paste the COMPLETE contents of `YYYY.MM.DD-chat-ready.md` into the Kai chat. Do not merely summarize or provide paths. Preserve every code block and all wording exactly. It must include:
-- Each post caption in its own code block.
-- Each image prompt in its own code block.
-- Each comment draft in its own separate code block.
-- Source URLs, topic log, verification checklist, publication status.
-- News scan result and clear Post 5 skipped note when applicable.
-
-Then briefly state saved paths and counts. Do not omit the full post content. Do not publish or comment on Facebook.
-
-## Daily schedule setup
-If the user asks to schedule this workflow, create one recurring task using Kai's `schedule_task` tool with cron `0 8 * * *` (08:00 in Kai/device local timezone). The task prompt must explicitly say to read this skill and the Master Prompt from disk, run the complete daily workflow above, save the outputs, and paste the entire chat-ready Markdown into the scheduled-task response. Do not create duplicate recurring tasks; call `list_tasks` first and reuse/leave an existing matching task. Explain that Kai's scheduled task output may appear in the heartbeat/scheduled-task conversation surface, not necessarily the original chat thread.
