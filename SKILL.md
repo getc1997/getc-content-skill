@@ -53,8 +53,8 @@ Search Japanese, English, and Burmese sources for urgent updates affecting Myanm
 Follow every rule in `master_prompt_template.md`:
 - **FB Safety Shield:** No external website URLs inside the post caption (put official source URLs inside Comment 1). No banned promise words, no Facebook polls, no "မမတို့", and always spell "comment" in English.
 - **Mandatory Bidirectional Cross-Promotion:**
-  - Posts 1 & 2 (`GETC - Hledan`) MUST include a natural cross-promotion link to `https://www.facebook.com/gakushineikou2`.
-  - Posts 3 & 4 (`GETC - Kamayut`) MUST include a natural cross-promotion link to `https://www.facebook.com/gakushineikou`.
+  - Posts 1 & 2 (`GETC - Hledan`) MUST include a natural cross-promotion link to `[https://www.facebook.com/gakushineikou2](https://www.facebook.com/gakushineikou2)`.
+  - Posts 3 & 4 (`GETC - Kamayut`) MUST include a natural cross-promotion link to `[https://www.facebook.com/gakushineikou](https://www.facebook.com/gakushineikou)`.
 - **Zero-Shadow Comments (Information Gap):** Hold back 1–2 crucial exceptions, edge cases, or insider tips from the main caption and reveal them in Comment 2. NEVER repeat or paraphrase the main caption inside the comments.
 - **Synthesized Burmese & Japanese Format:** Never translate a web article line-by-line. Always write Japanese as `Japanese Script (Romaji) — Burmese meaning`.
 - **Image Prompts (No English Text + Logo Watermark):** Any text on the image MUST be in Japanese script and Burmese only (no English text unless strictly unavoidable). Instruct the AI to place the attached GETC school logo cleanly in the top-left or top-right corner (12–15% width) as a subtle, semi-transparent watermark blended naturally with the background without distorting the logo.
@@ -92,7 +92,7 @@ Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch
   "posts": [
     {
       "post_number": 1,
-      "page": "GETC - Hledan ([https://www.facebook.com/gakushineikou](https://www.facebook.com/gakushineikou))",
+      "page": "GETC - Hledan (https://www.facebook.com/gakushineikou)",
       "role": "Assigned role",
       "category": "Selected category from categories.txt",
       "topic_type": "STATIC or DYNAMIC",
@@ -124,3 +124,14 @@ Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch
     }
   ]
 }
+```
+
+### 7. Validate & Save via `generate_posts.py`
+Run:
+`python3 /root/GETC/Marketing/generate_posts.py --input /root/GETC/Marketing/.getc_batch_YYYY.MM.DD.json`
+*(If a `--date YYYY.MM.DD` override was requested by the user, pass `--date YYYY.MM.DD` to `generate_posts.py` as well).*
+
+If `generate_posts.py` exits with a validation error (e.g., shadow comment overlap, missing cross-promotion link, duplicate `core_tags` within cooldown window, reused URL, or banned phrase), fix the JSON immediately and re-run until `GETC SAVE SUCCESS` appears. Once succeeded, remove the temporary `.getc_batch_YYYY.MM.DD.json` file so the directory stays clean.
+
+### 8. Final Chat Output Format
+Read the generated `/root/GETC/Marketing/FB_Posts/YYYY.MM.DD-chat-ready.md` and present the entire **PART 1: COPY-READY CONTENT** (Posts 1–4/5 captions, image prompts, comments, and the Reels/TikTok script + B-roll prompts) directly in the chat using clean individual code blocks so the user can tap-to-copy immediately on mobile, followed by a concise summary of **PART 2: AUDIT & NEWS SCAN STATUS**.
