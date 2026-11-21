@@ -3,7 +3,7 @@ name: getc-content
 description: Produce GETC's daily four Facebook drafts, one daily Reels/TikTok video script, scan Japan news for a qualifying optional Post 5, verify dates and sources, save files and logs via generate_posts.py, and show every draft in copy-ready code blocks.
 ---
 
-# GETC Daily Content Production — V1
+# GETC Daily Content Production — V1.1
 
 You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai's live web tools and shell tools. Complete the entire workflow autonomously; do not stop to ask the user to copy log lines manually.
 
@@ -19,9 +19,9 @@ You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai
 - Generator & Validator script: `/root/GETC/Marketing/generate_posts.py`
 
 ## Default Daily Run
-1. Generate Posts 1–4 every day (150–250 words each, 1-minute read, strict Facebook safety compliance).
+1. Generate Posts 1–4 every day (150–250 words each for Posts 1–3, 80–150 words for Post 4, strict Facebook safety compliance).
 2. Generate one 30–45 second vertical video script (for Facebook Reels & TikTok) based on the strongest post of the day, including 2 vertical (9:16) Gemini B-roll image prompts.
-3. Perform the mandatory daily Japan news scan. Generate Post 5 only if a genuinely important, current, and verified update qualifies. Otherwise explicitly skip Post 5.
+3. Perform the mandatory daily Japan news scan. Generate Post 5 only if a genuinely important, current, and verified update qualifies (intended for both GETC pages). Otherwise explicitly skip Post 5.
 4. Never connect to Facebook or publish/schedule anything automatically.
 
 ## Required Execution Sequence
@@ -44,15 +44,15 @@ Check the current local date/time in `Asia/Yangon` (or the timezone configured i
 Search Japanese, English, and Burmese sources for important updates affecting Myanmar students, workers, or residents in Japan (past 24–72 hours, newly updated official rules, or upcoming effective dates/deadlines).
 - Open exact source pages; never rely on search snippets alone.
 - Cross-check legal/immigration/policy updates across at least two authoritative sources (Tier 1 official + Tier 2 news) where possible.
-- If a qualifying item exists, create Post 5 and set `news_monitoring.status` to `POST_CREATED`.
+- If a qualifying item exists, create Post 5 (for both pages) and set `news_monitoring.status` to `POST_CREATED`.
 - If none qualifies, omit Post 5 and set `news_monitoring.status` to `NO_QUALIFYING_NEWS`.
 
 ### 5. Write Content & Video Script
 Follow every rule in `master_prompt_template.md`:
-- **FB Safety Shield:** No external website URLs inside the post caption (put official source URLs inside Comment 1 instead). No banned promise words (e.g., "100% visa guarantee", "guaranteed job").
-- **Synthesized Burmese:** Never translate a web article line-by-line. Synthesize into Problem -> Official Fact -> Actionable GETC Tip.
-- **Image Prompts:** Instruct the AI to place the attached GETC school logo cleanly in the top-left or top-right corner as a subtle, semi-transparent watermark blended naturally with the background without distorting the logo.
-- **Video Script:** Create one 30–45 second Reels/TikTok script (Hook, 3 Quick Points, CTA) plus two 9:16 B-roll image prompts for Gemini + CapCut workflow.
+- **FB Safety Shield:** No external website URLs inside the post caption (put official source URLs inside Comment 1 instead; GETC Facebook Page URLs are allowed for cross-promotion). No banned promise words, no Facebook polls, no "မမတို့", and always spell "comment" in English.
+- **Synthesized Burmese & Japanese Format:** Never translate a web article line-by-line. Synthesize into Problem -> Official Fact -> Actionable Tip + Interactive Comment Invitation. Always write Japanese as `Japanese Script (Romaji) — Burmese meaning`.
+- **Image Prompts (No English Text + Logo Watermark):** Any text on the image MUST be in Japanese script and Burmese only (no English text unless strictly unavoidable). Instruct the AI to place the attached GETC school logo cleanly in the top-left or top-right corner as a subtle, semi-transparent watermark blended naturally with the background without distorting the logo.
+- **Video Script:** Create one 30–45 second Reels/TikTok script (Hook, 3 Quick Points, CTA) plus two 9:16 B-roll image prompts (following the same Japanese/Burmese-only text and logo watermark rules) for Gemini + CapCut workflow.
 
 ### 6. Build JSON Batch
 Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch_YYYY.MM.DD.json` matching this exact schema:
@@ -90,11 +90,11 @@ Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch
       "role": "Assigned role",
       "category": "Selected category from categories.txt",
       "title": "Working title",
-      "caption": "Complete Burmese Facebook caption (150-250 words, no external URLs, includes #GETC #GakushinEikou + 2-4 trending hashtags)",
-      "image_prompt": "Complete image prompt with attached school logo corner watermark blending instructions",
+      "caption": "Complete Burmese Facebook caption (no external URLs, includes #GETC #GakushinEikou + 2-4 trending hashtags)",
+      "image_prompt": "Complete image prompt (Japanese/Burmese text only + attached school logo corner watermark blending)",
       "comments": [
         "Comment 1: Official source link + brief verification note",
-        "Comment 2: Practical extra tip or lead magnet prompt"
+        "Comment 2: Practical extra tip or follow-up insight"
       ],
       "sources": [
         {
