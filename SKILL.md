@@ -1,9 +1,9 @@
 ---
 name: getc-content
-description: Produce GETC's daily four value-first Facebook drafts, one 30-second Reels/TikTok video script, scan Japan news for a qualifying optional Post 5, enforce first-occurrence Japanese glosses, 2-3 informative Burmese Zero-Shadow comments, brief CTAs, Post 1 & 3 cross-promotion, and smart topic lifecycle via generate_posts.py, and display copy-ready blocks in chat.
+description: Produce GETC's daily four value-first Facebook drafts (with Post 4 strictly as a Japanese language lesson from language websites in sources.txt), one 30-second Reels/TikTok video script, scan Japan news for a qualifying optional Post 5, enforce 'ဂျပန်စာ (Romaji - မြန်မာလို)' on first occurrence only, 2-3 informative Burmese Zero-Shadow comments, brief CTAs, Post 1 & 3 plain cross-promotion, and smart topic lifecycle via generate_posts.py, rendering copy-ready blocks directly inline in the chat UI without file links.
 ---
 
-# GETC Daily Content Production — V1.4
+# GETC Daily Content Production — V1.6
 
 You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai's live web tools and shell tools. Complete the entire workflow autonomously; do not stop to ask the user to copy log lines manually.
 
@@ -19,7 +19,9 @@ You are running in Kai 9000 on Android with the Debian 12 Linux Sandbox. Use Kai
 - Generator & Validator script: `/root/GETC/Marketing/generate_posts.py`
 
 ## Default Daily Run
-1. Generate Posts 1–4 every day (150–250 words of structured, zero-fluff Burmese educational/practical info for Posts 1–3; 80–150 words for Post 4; strict Facebook safety compliance).
+1. Generate Posts 1–4 every day:
+   - **Posts 1–3:** 150–250 words of structured, zero-fluff Burmese educational/practical info researched from deep-dive articles in `sources.txt`.
+   - **Post 4 (`GETC - Kamayut`):** Strictly a **Daily Short Japanese Language Lesson** (Grammar, Vocabulary, Nuance, Keigo, Kanji, or Daily Expressions; 80–150 words) researched specifically from the **Japanese language teaching websites in `sources.txt`**.
 2. Generate one **strictly 30-second** vertical video script (for Facebook Reels & TikTok) based on the strongest post of the day, including 2 vertical (`9:16`) Gemini B-roll image prompts.
 3. Perform the mandatory daily Japan news scan. Generate Post 5 ONLY if a genuinely urgent, time-critical policy/visa/deadline update (announced within 24–72 hours) qualifies. Otherwise omit Post 5.
 4. Never connect to Facebook or publish/schedule anything automatically.
@@ -35,11 +37,13 @@ Use `execute_shell_command` to read:
 ### 2. Confirm Date & Timezone
 Check the current local date/time in `Asia/Yangon` (`+06:30`). Use one consistent `YYYY.MM.DD` date for filenames and `YYYY-MM-DD` for logs. Always include the current year in search queries to prevent outdated results.
 
-### 3. Dynamic Hashtag Research & Smart Topic Planning
+### 3. Deep-Dive Source Research & Smart Topic Planning
 - Use `web_search` to find 2–4 currently trending, relevant Burmese/English/Japanese hashtags on Facebook and TikTok for Japan study, JLPT, or Japan life. Always pair them with mandatory `#GETC` and `#GakushinEikou` (total 4–6 hashtags per post).
 - Review the last 120 lines of `used_topics.txt` and `used_sources.txt` BEFORE researching articles.
 - **Anti-Repetition Rule:** Never select a topic whose core concept (`core_tags`) was already covered in `used_topics.txt` (within 180 days for `STATIC` topics, or within 90 days for `DYNAMIC` policy topics unless an official source published a newer update date). Never reuse an exact URL from `used_sources.txt`, and respect the 3-day domain cooldown for non-government sites.
-- Open and read full specific sub-page articles from `sources.txt` rather than generic landing pages.
+- **Mandatory Deep-Dive Reading (NO Guessing from Titles):**
+  - Pick specific domains from `sources.txt` (for **Post 4**, specifically pick a Japanese language teaching website from `sources.txt`).
+  - Navigate to and fetch **specific deep-dive article or lesson sub-page URLs** (NEVER cite bare homepages like `https://www.jpf.go.jp/e/`). Read the full page content and extract concrete facts, rules, or grammar patterns.
 
 ### 4. Mandatory Japan News Scan (Post 5 Gate)
 Search Japanese, English, and Burmese sources for urgent updates affecting Myanmar students, workers, or residents in Japan announced in the **past 24–72 hours** (or critical deadlines closing within days).
@@ -53,15 +57,16 @@ Search Japanese, English, and Burmese sources for urgent updates affecting Myanm
 Follow every rule in `master_prompt_template.md`:
 - **Value-First, Zero Bragging (18–35 Youth & Guardians):** Write like a trusted mentor—structured (`📌 ၁။ ...`, `📌 ၂။ ...`), crisp, and memorable so readers want to Like & Share. Never include boastful brochure sections bragging about GETC.
 - **Varied Hooks:** Rotate across fact, warning/mistake, relatable scenario, actionable tip, and question hooks. At most 1 post among Posts 1–4 may open with a question hook.
-- **Japanese First-Occurrence Rule:**
-  - Show `Japanese Script (Romaji) — Burmese meaning` ONLY on the **first occurrence** of each Japanese term in a post. Whenever that same term is used again in the post or comments, write **ONLY the Japanese script** so readers grow familiar with reading Japanese.
-  - Posts 1–3 use Japanese terms/short phrases only within rich Burmese explanations; reserve full example sentences for Post 4. Never use standalone Burmese phonetic approximations.
+- **Japanese First-Occurrence Rule (`ဂျပန်စာ (Romaji - မြန်မာလို)`):**
+  - On the **first occurrence** of any Japanese term in a post, ALWAYS put Japanese script first in this exact format: `ဂျပန်စာ (Romaji - မြန်မာလို)` — e.g., `件名 (Kenmei - ခေါင်းစဉ်)`. NEVER put Romaji first (`Keigo (敬語)` is forbidden), NEVER put English inside the parentheses instead of Burmese, and NEVER write standalone Romaji without Japanese script.
+  - On **every subsequent occurrence** of that term in the post or comments, write **ONLY the Japanese script** (`件名`) so readers build visual familiarity with Japanese characters.
+  - Posts 1–3 use Japanese terms/short phrases only within rich Burmese explanations; Post 4 is a Japanese language lesson with 2 short example sentences. Never use standalone Burmese phonetic approximations.
 - **Comment Teaser + 2–3 Informative Burmese Comments (NO URLs):**
   - End every caption body with a natural teaser inviting readers to check the comments (always spelling `comment` in English).
   - Write **2 to 3 substantial comments** per post strictly in **Burmese** in the exact same informative mentor tone as the post—revealing omitted rules, exceptions, or insider tips from the source article. NEVER put URLs or empty "Messenger မှ ဆက်သွယ်ပါ" filler in comments.
-- **Brief CTA & Post 1 & 3 Cross-Promotion:**
+- **Brief CTA & Post 1 & 3 Cross-Promotion (Plain URLs Only):**
   - End with a brief, natural 1–2 line CTA inviting readers to inquire/enroll/register at GETC.
-  - Include cross-promotion ONLY on **Post 1** (`GETC - Kamayut` + plain URL `[https://www.facebook.com/gakushineikou2](https://www.facebook.com/gakushineikou2)`) and **Post 3** (`GETC - Hledan` + plain URL `[https://www.facebook.com/gakushineikou](https://www.facebook.com/gakushineikou)`), using full page names without Markdown link brackets.
+  - Include cross-promotion ONLY on **Post 1** (`GETC - Kamayut` + plain URL `https://www.facebook.com/gakushineikou2`) and **Post 3** (`GETC - Hledan` + plain URL `https://www.facebook.com/gakushineikou`). Write plain URLs directly (NEVER `[url](url)` Markdown link brackets).
 - **Rich Image Prompts:** Describe a clear visual scene + exact **Japanese script AND Burmese title overlay** (no English text on graphic) + single attached GETC school logo corner watermark (`top-left` or `top-right`) blended naturally with the background. Use `1:1` square or `4:5` portrait for Posts 1–4, and `9:16` vertical for the 2 video B-roll prompts.
 - **30-Second Video Script:** Write a crisp 30-second Reels/TikTok script (`title`, `hook_0_3s`, `body_3_24s`, `cta_24_30s`) plus two `9:16` B-roll image prompts.
 
@@ -78,7 +83,7 @@ Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch
     "sources_checked": [
       {
         "title": "Exact page title",
-        "url": "Exact page URL",
+        "url": "Exact deep-dive page URL",
         "published_or_updated": "YYYY-MM-DD or Date not stated"
       }
     ]
@@ -97,14 +102,14 @@ Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch
   "posts": [
     {
       "post_number": 1,
-      "page": "GETC - Hledan (https://www.facebook.com/gakushineikou)",
+      "page": "GETC - Hledan ([https://www.facebook.com/gakushineikou](https://www.facebook.com/gakushineikou))",
       "role": "Assigned role",
       "category": "Selected category from categories.txt",
       "topic_type": "STATIC or DYNAMIC",
       "core_tags": ["japan", "standardized-tag-2", "standardized-tag-3"],
       "source_updated_date": "YYYY-MM-DD or Date not stated",
       "title": "Working title",
-      "caption": "Complete Burmese Facebook caption (varied hook, structured 📌 info, first-occurrence Japanese glosses, natural 'comment' teaser, brief 1-2 line GETC CTA, full-name cross-promo on Post 1 & 3 only, 4-6 hashtags)",
+      "caption": "Complete Burmese Facebook caption (varied hook, structured 📌 info, first-occurrence 'ဂျပန်စာ (Romaji - မြန်မာလို)' glosses then Japanese script only, natural 'comment' teaser, brief 1-2 line GETC CTA, full-name plain-URL cross-promo on Post 1 & 3 only, 4-6 hashtags)",
       "image_prompt": "1:1 square or 4:5 portrait image prompt (rich scene + Japanese script AND Burmese text overlay + single attached school logo corner watermark blended with background)",
       "comments": [
         "Comment 1 in Burmese: Substantial omitted detail/rule from source article in the same informative tone (NO URLs)",
@@ -113,10 +118,10 @@ Write valid UTF-8 JSON (no Markdown fences) to `/root/GETC/Marketing/.getc_batch
       ],
       "sources": [
         {
-          "title": "Exact source title",
-          "url": "Exact source sub-page URL",
+          "title": "Exact article/lesson sub-page title",
+          "url": "Exact deep-dive sub-page URL from sources.txt",
           "published_or_updated": "YYYY-MM-DD or Date not stated",
-          "claim_supported": "Specific supported claim"
+          "claim_supported": "Concrete verified facts/grammar extracted from the page"
         }
       ],
       "topic": "Normalized topic",
@@ -139,5 +144,7 @@ Run:
 
 If `generate_posts.py` exits with a validation error, fix every listed issue in the JSON immediately and re-run until `GETC SAVE SUCCESS` appears. Once succeeded, remove the temporary `.getc_batch_YYYY.MM.DD.json` file so the directory stays clean.
 
-### 8. Final Chat Output Format
-Read the generated `/root/GETC/Marketing/FB_Posts/YYYY.MM.DD-chat-ready.md` and present the entire **PART 1: COPY-READY CONTENT** (Posts 1–4/5 captions, image prompts, 2–3 Burmese comments per post, and the 30-second Reels/TikTok script + B-roll prompts) directly in the chat using clean individual code blocks so the user can tap-to-copy immediately on mobile, followed by a concise summary of **PART 2: AUDIT & NEWS SCAN STATUS**.
+### 8. Final Chat Output Format (Direct Inline Text — NEVER File Links)
+Read `/root/GETC/Marketing/FB_Posts/YYYY.MM.DD-chat-ready.md` using `cat` in shell and paste its **PART 1: COPY-READY CONTENT** directly inside your final chat response message:
+- **CRITICAL ANDROID UI RULE:** NEVER include any clickable markdown file link (`[...](...)`), `file://` URI, file attachment card, or full `/root/.../YYYY.MM.DD-chat-ready.md` path in your final reply (which triggers Android's "Open with..." external app chooser dialog).
+- Render all Posts 1–4/5 captions, image prompts, 2–3 Burmese comments per post, and the 30-second Reels/TikTok script + B-roll prompts directly inside your response using individual ```text fenced code blocks so the user can tap-to-copy immediately inside the chat UI, followed by a concise plain-text summary of **PART 2: AUDIT & NEWS SCAN STATUS**.
