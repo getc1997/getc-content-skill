@@ -75,9 +75,8 @@ Before writing `/root/GETC/Marketing/.getc_batch_${TARGET_DATE}-${SLOT}.json`, r
 
 Write valid UTF-8 JSON (plain URLs only) and run:
 ```bash
-python3 /root/GETC/Marketing/generate_posts.py --input "/root/GETC/Marketing/.getc_batch_${TARGET_DATE}-${SLOT}.json" --date "$TARGET_DATE" --slot "$SLOT" && rm -f /root/GETC/Marketing/.getc_batch_*.json /root/GETC/Marketing/.daily_brief_*.json
+python3 /root/GETC/Marketing/generate_posts.py --input "/root/GETC/Marketing/.getc_batch_${TARGET_DATE}-${SLOT}.json" --date "$TARGET_DATE" --slot "$SLOT" && (python3 /root/GETC/Marketing/render_images.py --date "$TARGET_DATE" --slot "$SLOT" || echo "IMAGE_RENDER_SKIPPED") && rm -f /root/GETC/Marketing/.getc_batch_*.json /root/GETC/Marketing/.daily_brief_*.json
 ```
-
 ### Step 3: Output Split Copy-Boxes in Chat
 Run `cat "/root/GETC/Marketing/FB_Posts/${TARGET_DATE}-${SLOT}-chat-ready.md"` and paste **PART 1** verbatim with every ` ```text ` block intact, followed by a brief plain-text summary of **PART 2**.
 
